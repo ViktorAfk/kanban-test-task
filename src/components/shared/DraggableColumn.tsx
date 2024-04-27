@@ -5,7 +5,7 @@ import { FC } from 'react';
 import { StrictModeDroppable } from './StrictModeDroppable';
 
 interface Props {
-  issues: Issue[] | undefined;
+  issues: Issue[] | [];
   columnTitle: string;
 }
 
@@ -13,7 +13,7 @@ export const DraggableColumn: FC<Props> = ({ issues, columnTitle }) => {
   return (
     <GridItem borderRadius="md" bg="white" w="100%" p={2}>
       <Heading as="h2">{columnTitle}</Heading>
-      <StrictModeDroppable droppableId={columnTitle.toLowerCase()} type="group">
+      <StrictModeDroppable droppableId={columnTitle} type="group">
         {(provided) => (
           <Box {...provided.droppableProps} ref={provided.innerRef}>
             {issues?.map((repo, index) => {

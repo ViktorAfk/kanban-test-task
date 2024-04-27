@@ -1,28 +1,20 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { FilteredIssues, Issue } from "../../types/issue";
+import { IssueItem} from "../../types/issue";
 import { RootState } from "../store";
 
 interface InitialFilteredIssues {
-  value: {
-    todo: Issue[] | [];
-    in_progress: Issue[] | [];
-    done: Issue[] | [];
-  }
+  value:IssueItem[] | [];
 }
 
 const initialState: InitialFilteredIssues = {
-  value: {
-    todo: [],
-    in_progress: [],
-    done: [],
-  }
+  value: []
 }
 
 export const filteredIssuesSlice = createSlice({
   name: 'filteredIssues',
   initialState,
   reducers: {
-    setFilteredIssues: (state, actiton: PayloadAction<FilteredIssues>) => {
+    setFilteredIssues: (state, actiton: PayloadAction<IssueItem[]>) => {
       state.value = actiton.payload
     }
   }

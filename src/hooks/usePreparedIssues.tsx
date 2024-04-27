@@ -1,20 +1,27 @@
 import { useEffect } from 'react';
 import { selectFilteredIssues, setFilteredIssues } from '../store/services/filteredIssues';
 import { useGetAllIssuesQuery } from '../store/services/issues';
-import { getFiltteredIssues } from '../utiels';
+import { getFiltteredIssues, getLocalStorageItems } from '../utiels';
 import { useAppDispatch, useAppSelector } from './ReduxHooks';
 
 export const usePreparedIssues = (userRepo: string) => {
   const dispatch = useAppDispatch();
-  const userRepoInStorage = localStorage.getItem(userRepo);
   const filteredIssues = useAppSelector(selectFilteredIssues);
-
-  const { data } = useGetAllIssuesQuery(userRepo);
+  const { data } = useGetAllIssuesQuery(userRepo, { skip: !userRepo });
 
   useEffect(() => {
-    if (!userRepoInStorage) {
+    const hasRepoInLocalStorage = localStorage.getItem(userRepo);
+    const storageIsues = getLocalStorageItems(hasRepoInLocalStorage);
+
+    if (userRepo && hasRepoInLocalStorage) {
+      if (storageIsues.length > 0) {
+        dispatch(setFilteredIssues(storageIsues));
+      }
+    }
+
+    if (userRepo && !hasRepoInLocalStorage) {
       const dataForRender = data
-        ? data.map(({ id, number, title, state, comments, body, assignee, assignees }) => ({
+        ? data.map(({ id, number, title, created_at, author_association, state, comments, body, assignee }) => ({
             id,
             number,
             title,
@@ -22,7 +29,8 @@ export const usePreparedIssues = (userRepo: string) => {
             comments,
             body,
             assignee,
-            assignees,
+            author_association,
+            created_at,
           }))
         : [];
 
@@ -32,5 +40,5 @@ export const usePreparedIssues = (userRepo: string) => {
     }
   }, [data, userRepo]);
 
-  return [filteredIssues];
+  return { filteredIssues };
 };
