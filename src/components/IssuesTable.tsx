@@ -9,10 +9,10 @@ import { setFilteredIssues } from '../store/services/filteredIssues';
 import { getNewItemsDestination, setItemToLocalStorage } from '../utiels';
 
 interface Props {
-  userRepo: string
+  userRepo: string;
 }
 
-export const IssuesTable: FC<Props> = ( { userRepo }) => {
+export const IssuesTable: FC<Props> = ({ userRepo }) => {
   const repo = useAppSelector(userRepoValue);
   const { filteredIssues } = usePreparedIssues(userRepo);
   const dispatch = useAppDispatch();
@@ -20,20 +20,24 @@ export const IssuesTable: FC<Props> = ( { userRepo }) => {
   const handleDragDrop = (results: DropResult) => {
     const newItems = getNewItemsDestination(filteredIssues, results);
 
-      if(newItems) {
-        dispatch(setFilteredIssues(newItems));
-        setItemToLocalStorage(repo, newItems);
-      }
+    if (newItems) {
+      dispatch(setFilteredIssues(newItems));
+      setItemToLocalStorage(repo, newItems);
+    }
   };
 
   return (
-    <Grid w={'100%'} templateColumns={{
-      base: "repeat(1, minmax(200px, 1fr))", 
-      md: "repeat(3, minmax(220px, 1fr))", 
-    }}  gap={4}>
+    <Grid
+      w={'100%'}
+      templateColumns={{
+        base: 'repeat(1, minmax(200px, 1fr))',
+        md: 'repeat(3, minmax(220px, 1fr))',
+      }}
+      gap={4}
+    >
       <DragDropContext onDragEnd={handleDragDrop}>
-        {filteredIssues.map(({name, items}) => (
-          <DraggableColumn issues={items} columnTitle={name} key={name}/>
+        {filteredIssues.map(({ name, items }) => (
+          <DraggableColumn issues={items} columnTitle={name} key={name} />
         ))}
       </DragDropContext>
     </Grid>
