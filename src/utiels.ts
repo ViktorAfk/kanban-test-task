@@ -1,6 +1,22 @@
 import { DropResult } from 'react-beautiful-dnd';
 import { ColumnHeader, Issue, IssueItem, } from './types/issue';
 
+export const getTimeFromCreate = (createAt: string) => {
+  const DAY_AGO = "day(s) ago";
+  const HOURS_AGO = "hour(s) ago";
+  const ONE_DAY = 1000 * 3600 * 24;
+  const currentDate = new Date().toISOString();;
+  const createdDate = new Date(createAt).toISOString();
+
+  const differenceInTime = Date.parse(currentDate) - Date.parse(createdDate);
+  const resultDay = differenceInTime / ONE_DAY;
+
+  if (resultDay < 1) {
+    return `opened ${Math.round(resultDay * 24)} ${HOURS_AGO}`
+  }
+  return `opened ${Math.round(resultDay)} ${DAY_AGO}`
+};
+
 export const getFiltteredIssues = (items: Issue[]): IssueItem[] => {
   const todo = items.filter(({ assignee, state }) => assignee === null && state === 'open');
   const in_progress = items.filter(({ assignee, state }) => assignee !== null && state === 'open');

@@ -13,6 +13,7 @@ export const TodoInput = () => {
   const onHandleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
     const preparedValue = value.trim();
+  
     setQuery(preparedValue);
   };
 
