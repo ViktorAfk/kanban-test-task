@@ -7,7 +7,7 @@ import { useAppDispatch, useAppSelector } from './ReduxHooks';
 export const usePreparedIssues = (userRepo: string) => {
   const dispatch = useAppDispatch();
   const filteredIssues = useAppSelector(selectFilteredIssues);
-  const { data } = useGetAllIssuesQuery(userRepo, { skip: !userRepo });
+  const { data, error: hasError } = useGetAllIssuesQuery(userRepo, { skip: !userRepo });
 
   useEffect(() => {
     const hasRepoInLocalStorage = localStorage.getItem(userRepo);
@@ -40,5 +40,5 @@ export const usePreparedIssues = (userRepo: string) => {
     }
   }, [data, userRepo]);
 
-  return { filteredIssues };
+  return { filteredIssues, hasError };
 };

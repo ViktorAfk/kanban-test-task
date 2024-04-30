@@ -3,7 +3,7 @@ import { setUserRepo } from '../store/services/query';
 import { useDispatch } from 'react-redux';
 import { useState } from 'react';
 
-export const TodoInput = () => {
+export const FormIssue = () => {
   const [query, setQuery] = useState<string>('');
   const [isDisabled, setIsDisabled] = useState(false);
   const [isError, setIsError] = useState(false);
@@ -13,7 +13,7 @@ export const TodoInput = () => {
   const onHandleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
     const preparedValue = value.trim();
-  
+
     setQuery(preparedValue);
   };
 
@@ -23,7 +23,7 @@ export const TodoInput = () => {
     setIsDisabled(true);
     setIsError(false);
 
-    const shouldStartWith = /^https:\/\/github\.com/;
+    const shouldStartWith = /^https:\/\/github\.com\/[^\/]+\/[^\/]+/;
 
     if (!shouldStartWith.test(query)) {
       setIsError(true);
@@ -35,6 +35,7 @@ export const TodoInput = () => {
 
     dispatch(setUserRepo(preparedValue));
     setIsDisabled(false);
+    setQuery('');
   };
 
   return (
@@ -49,15 +50,27 @@ export const TodoInput = () => {
       isInvalid={isError}
     >
       <Box w="100%">
-        <FormLabel>Enter your repo</FormLabel>
+        <FormLabel visibility={'hidden'} id="form-issue">
+          Enter your repo
+        </FormLabel>
         <Box display="flex" gap="4">
-          <Input w="100%" type="text" bgColor="white" value={query} onChange={onHandleChange} />
-          <Button type="submit" color="black" alignSelf="center">
+          <Input
+            w="100%"
+            aria-label="form-issue"
+            placeholder="Enter your repo"
+            type="text"
+            bgColor="white"
+            value={query}
+            onChange={onHandleChange}
+          />
+          <Button isDisabled={query.length === 0} type="submit" color="black" alignSelf="center">
             Load
           </Button>
         </Box>
       </Box>
-      <FormErrorMessage fontSize="large">Url should start with 'https://github.com/'</FormErrorMessage>
+      <FormErrorMessage color={'black'} fontSize="large">
+        Url should look like 'https://github.com/your-acount/your-repo'
+      </FormErrorMessage>
     </FormControl>
   );
 };

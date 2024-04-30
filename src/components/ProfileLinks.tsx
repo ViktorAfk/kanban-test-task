@@ -6,11 +6,11 @@ interface Props {
 }
 const GITHUBLINK = 'https://github.com/';
 
-export const LinksComponent: FC<Props> = ({ userRepo }) => {
+export const ProfileLinks: FC<Props> = ({ userRepo }) => {
   const [user, repo] = userRepo.split('/');
 
   return (
-    <Flex alignSelf="flex-start" gap={2} mb={4} alignItems={'center'}>
+    <Flex data-testid="custom-element" alignSelf="flex-start" gap={2} mb={4} alignItems={'center'}>
       <Link textTransform="uppercase" href={`${GITHUBLINK}/${user}`} target="_blank">
         {user}
       </Link>
