@@ -1,20 +1,20 @@
 import { DropResult } from 'react-beautiful-dnd';
-import { ColumnHeader, Issue, IssueItem, } from './types/issue';
+import { ColumnHeader, Issue, IssueItem } from './types/issue';
 
 export const getTimeFromCreate = (createAt: string) => {
-  const DAY_AGO = "day(s) ago";
-  const HOURS_AGO = "hour(s) ago";
+  const DAY_AGO = 'day(s) ago';
+  const HOURS_AGO = 'hour(s) ago';
   const ONE_DAY = 1000 * 3600 * 24;
-  const currentDate = new Date().toISOString();;
+  const currentDate = new Date().toISOString();
   const createdDate = new Date(createAt).toISOString();
 
   const differenceInTime = Date.parse(currentDate) - Date.parse(createdDate);
   const resultDay = differenceInTime / ONE_DAY;
 
   if (resultDay < 1) {
-    return `opened ${Math.round(resultDay * 24)} ${HOURS_AGO}`
+    return `opened ${Math.round(resultDay * 24)} ${HOURS_AGO}`;
   }
-  return `opened ${Math.round(resultDay)} ${DAY_AGO}`
+  return `opened ${Math.round(resultDay)} ${DAY_AGO}`;
 };
 
 export const getFiltteredIssues = (items: Issue[]): IssueItem[] => {
@@ -69,7 +69,7 @@ export const getLocalStorageItems = (items: string | null) => {
   const parseItems = items ? JSON.parse(items) : [];
 
   return parseItems;
-}
+};
 
 export const setItemToLocalStorage = (userRepo: string, items: IssueItem[]) => {
   if (!userRepo) {

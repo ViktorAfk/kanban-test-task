@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { Grid } from '@chakra-ui/react';
+import { Alert, AlertDescription, AlertIcon, AlertTitle, Grid } from '@chakra-ui/react';
 import { useAppDispatch, useAppSelector } from '../hooks/ReduxHooks';
 import { userRepoValue } from '../store/services/query';
 import { DragDropContext, DropResult } from 'react-beautiful-dnd';
@@ -14,7 +14,7 @@ interface Props {
 
 export const IssuesTable: FC<Props> = ({ userRepo }) => {
   const repo = useAppSelector(userRepoValue);
-  const { filteredIssues } = usePreparedIssues(userRepo);
+  const { filteredIssues, hasError } = usePreparedIssues(userRepo);
   const dispatch = useAppDispatch();
 
   const handleDragDrop = (results: DropResult) => {
@@ -27,19 +27,29 @@ export const IssuesTable: FC<Props> = ({ userRepo }) => {
   };
 
   return (
-    <Grid
-      w={'100%'}
-      templateColumns={{
-        base: 'repeat(1, minmax(200px, 1fr))',
-        md: 'repeat(3, minmax(220px, 1fr))',
-      }}
-      gap={4}
-    >
-      <DragDropContext onDragEnd={handleDragDrop}>
-        {filteredIssues.map(({ name, items }) => (
-          <DraggableColumn issues={items} columnTitle={name} key={name} />
-        ))}
-      </DragDropContext>
-    </Grid>
+    <>
+      {hasError ? (
+        <Alert status="error">
+          <AlertIcon />
+          <AlertTitle>Oops, something went wrong</AlertTitle>
+          <AlertDescription>Are you sure your repo exists? Please check information about your repo.</AlertDescription>
+        </Alert>
+      ) : (
+        <Grid
+          w={'100%'}
+          templateColumns={{
+            base: 'repeat(1, minmax(200px, 1fr))',
+            md: 'repeat(3, minmax(220px, 1fr))',
+          }}
+          gap={4}
+        >
+          <DragDropContext onDragEnd={handleDragDrop}>
+            {filteredIssues.map(({ name, items }) => (
+              <DraggableColumn issues={items} columnTitle={name} key={name} />
+            ))}
+          </DragDropContext>
+        </Grid>
+      )}
+    </>
   );
 };

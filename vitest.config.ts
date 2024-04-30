@@ -4,6 +4,6 @@ export default defineConfig({
   test: {
     globals: true,
     setupFiles: ['./setupTests.ts'], // path to your setup file
-    environment: 'happy-dom'
+    environment: 'jsdom'
   },
 });
