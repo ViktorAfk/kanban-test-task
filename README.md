@@ -3,7 +3,7 @@ To run the project
 First, you need to clone the repository from GitHub. You can find the clone URL on the repository page on GitHub;
 You need to install dependencies run 'npm instal';
 Once the dependencies are installed, you can start the Vite development server: 'npm run dev'
-open this link (http://localhost)
+open this link (http://localhost:5173)
 Includes:
 
 - User can enter repo URL in the input on top of the page and press "Load". For example: https://github.com/facebook/react.
